@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { SimulationController } from "./classes/SimulationController";
 
@@ -22,7 +21,7 @@ const MainComponent = () => {
       >
         booths:{" "}
         {currentSnapshot?.booths.map((booth) => (
-          <h3>{JSON.stringify(booth)}</h3>
+          <span key={Math.random()}>{JSON.stringify(booth)}</span>
         ))}
       </h2>
       <h2>stack: {JSON.stringify(currentSnapshot?.stack)}</h2>
@@ -32,8 +31,4 @@ const MainComponent = () => {
   );
 };
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <MainComponent />
-  </StrictMode>,
-);
+createRoot(document.getElementById("root")!).render(<MainComponent />);

@@ -1,6 +1,6 @@
 import type { Konfig } from "./Konfig";
 
-export class HotKonfig implements Konfig {
+export class ColdKonfig implements Konfig {
     newNumberChance: number;
     abandonChance: number;
     priorityChance: number;
@@ -21,7 +21,7 @@ export class HotKonfig implements Konfig {
         this.conditionToEnd = conditionToEnd;
     }
 
-    public build(): HotKonfig {
-        return new HotKonfig(23, 15, 15, Math.floor(Math.random() * (5 - 3 + 1) + 3), true);
+    public build(): ColdKonfig {
+        return new ColdKonfig(23, 15, 15, Math.floor(Math.random() * (5 - 3 + 1) + 3), true);
     }
 }

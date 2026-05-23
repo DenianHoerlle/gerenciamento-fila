@@ -9,7 +9,7 @@ export type SnapshotType = {
   priorityQueue: number[];
   booths: [{}, {}, {}]; // TODO create BoothType
   stack: number[];
-  nextTwo: (number | null)[];
+  nextTwo: (number | undefined)[];
   abandonCounter: number;
 };
 
@@ -18,7 +18,7 @@ export class Snapshot {
   priorityQueue: PriorityQueue;
   booths: Booth[];
   stack: AttendanceStack;
-  nextTwo: (number | null)[];
+  nextTwo: (number | undefined)[];
   abandonCounter: number;
 
   constructor() {
@@ -26,7 +26,7 @@ export class Snapshot {
     this.priorityQueue = new PriorityQueue();
     this.booths = [new Booth(), new Booth(), new Booth()];
     this.stack = new AttendanceStack();
-    this.nextTwo = [null, null];
+    this.nextTwo = [undefined, undefined];
     this.abandonCounter = 0;
   }
 

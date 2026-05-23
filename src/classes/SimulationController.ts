@@ -6,13 +6,17 @@ import { type SnapshotType } from "./Snapshot";
 export class SimulationController {
   snapshots: SnapshotType[];
   queuesController: QueuesController;
+  konfig!: Konfig;
+  currentIteration: number;
+  isFinished: boolean = false;
 
   constructor() {
+    this.currentIteration = 0;
     this.snapshots = [];
     this.queuesController = new QueuesController();
   }
 
-  public start(): SnapshotType {
+  public start(konfig: Konfig): SnapshotType {
     const firstSnapshot: SnapshotType = {
       normalQueue: [],
       priorityQueue: [],
@@ -22,16 +26,22 @@ export class SimulationController {
       abandonCounter: 0,
     };
 
+    this.konfig = konfig;
+
     this.snapshots.push(firstSnapshot);
 
     return firstSnapshot;
   }
 
   public iterate() {
+    this.currentIteration++;
+
     // 1. Avança as filas
     let numerosChamados = [];
     for (let i = 0; i < 2; i++) {
-      numerosChamados.push(this.queuesController.callNextNumber());
+      numerosChamados.push(
+        this.queuesController.callNextNumber(this.konfig.abandonChance),
+      );
     }
 
     // 2. TODO adicionar pessoas nas cabines
@@ -52,10 +62,13 @@ export class SimulationController {
       booths: [{}, {}, {}],
       stack: [],
       nextTwo: this.queuesController.peekTwo(),
-      abandonCounter: 0,
+      abandonCounter: this.queuesController.getAbandonCounter(),
     };
 
     this.snapshots.push(newSnapshot);
+
+    if (this.konfig.conditionToEnd(this.currentIteration))
+      this.isFinished = true;
 
     return newSnapshot;
   }

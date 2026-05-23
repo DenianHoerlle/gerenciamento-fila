@@ -27,6 +27,11 @@ export class QueuesController {
     return this.priority;
   }
 
+  public getAbandonCounter() {
+    return this.abandonCounter;
+  }
+
+  public addNumber(priorityChance: number) {
     if (generateRandomness(priorityChance)) {
       return this.priority.enqueue(this.nextNumber++);
     }

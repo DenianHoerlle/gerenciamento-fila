@@ -36,7 +36,7 @@ export class Snapshot {
       priorityQueue: [],
       booths: [{}, {}, {}],
       stack: [],
-      nextTwo: [null, null],
+      nextTwo: [undefined, undefined],
       abandonCounter: 0,
     };
   }

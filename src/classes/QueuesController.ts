@@ -1,12 +1,6 @@
+import { generateRandomness } from "../utils";
 import { Queue } from "./Queue";
 import { Stack } from "./Stack";
-
-const ABANDON_CHANCE = 0.1;
-const PRIORITY_CHANCE = 0.2;
-
-const random = (randomChance: number): boolean => {
-  return Math.random() < randomChance;
-};
 
 export class QueuesController {
   private attended: Stack<number>;
@@ -33,15 +27,19 @@ export class QueuesController {
     return this.priority;
   }
 
-  public addNumber() {
-    if (random(PRIORITY_CHANCE)) {
+  public getAbandonCounter() {
+    return this.abandonCounter;
+  }
+
+  public addNumber(priorityChance: number) {
+    if (generateRandomness(priorityChance)) {
       return this.priority.enqueue(this.nextNumber++);
     }
 
     this.normal.enqueue(this.nextNumber++);
   }
 
-  public callNextNumber(): number | undefined {
+  public callNextNumber(abandonChance: number): number | undefined {
     const isPriority = this.priorityCounter % 3 === 0;
 
     let numberToCall: number | undefined;
@@ -57,9 +55,9 @@ export class QueuesController {
       return;
     }
 
-    if (random(ABANDON_CHANCE)) {
+    if (generateRandomness(abandonChance)) {
       this.abandonCounter++;
-      return this.callNextNumber();
+      return this.callNextNumber(abandonChance);
     }
 
     this.priorityCounter++;

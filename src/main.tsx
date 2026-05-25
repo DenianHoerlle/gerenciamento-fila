@@ -1,15 +1,15 @@
 import { useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { SimulationController } from "./classes/SimulationController";
+import { HotKonfig } from "./classes/konfigs/HotKonfig";
 
 const simulateSystem = () => {
   const SimulationControllerInstance = new SimulationController();
 
-  SimulationControllerInstance.start();
+  SimulationControllerInstance.start(HotKonfig.build());
 
-  SimulationControllerInstance.iterate();
-  SimulationControllerInstance.iterate();
-  SimulationControllerInstance.iterate();
+  while (!SimulationControllerInstance.isFinished)
+    SimulationControllerInstance.iterate();
 
   const snapshots = SimulationControllerInstance.stop();
 

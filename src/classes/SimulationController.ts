@@ -1,21 +1,22 @@
+import { generateRandomness } from "../utils";
+import type { Konfig } from "./konfigs/Konfig";
 import { QueuesController } from "./QueuesController";
 import { type SnapshotType } from "./Snapshot";
-
-const NEW_NUMBER_CHANCE = 0.9;
-const random = (randomChance: number): boolean => {
-  return Math.random() < randomChance;
-};
 
 export class SimulationController {
   snapshots: SnapshotType[];
   queuesController: QueuesController;
+  konfig!: Konfig;
+  currentIteration: number;
+  isFinished: boolean = false;
 
   constructor() {
+    this.currentIteration = 0;
     this.snapshots = [];
     this.queuesController = new QueuesController();
   }
 
-  public start(): SnapshotType {
+  public start(konfig: Konfig): SnapshotType {
     const firstSnapshot: SnapshotType = {
       normalQueue: [],
       priorityQueue: [],
@@ -25,16 +26,22 @@ export class SimulationController {
       abandonCounter: 0,
     };
 
+    this.konfig = konfig;
+
     this.snapshots.push(firstSnapshot);
 
     return firstSnapshot;
   }
 
   public iterate() {
+    this.currentIteration++;
+
     // 1. Avança as filas
     let numerosChamados = [];
     for (let i = 0; i < 2; i++) {
-      numerosChamados.push(this.queuesController.callNextNumber());
+      numerosChamados.push(
+        this.queuesController.callNextNumber(this.konfig.abandonChance),
+      );
     }
 
     // 2. TODO adicionar pessoas nas cabines
@@ -42,10 +49,10 @@ export class SimulationController {
     // 4. TODO finalizar atendimento nas cabines
 
     // 5. Adiciona pessoas na fila
-    let increment = 0;
-    while (random(NEW_NUMBER_CHANCE)) {
-      this.queuesController.addNumber();
-      increment++;
+    let peopleEntering = 0;
+    while (generateRandomness(this.konfig.newNumberChance)) {
+      this.queuesController.addNumber(this.konfig.priorityChance);
+      peopleEntering++;
     }
 
     // 6. Cria snapshot da iteração final
@@ -55,10 +62,13 @@ export class SimulationController {
       booths: [{}, {}, {}],
       stack: [],
       nextTwo: this.queuesController.peekTwo(),
-      abandonCounter: 0,
+      abandonCounter: this.queuesController.getAbandonCounter(),
     };
 
     this.snapshots.push(newSnapshot);
+
+    if (this.konfig.conditionToEnd(this.currentIteration))
+      this.isFinished = true;
 
     return newSnapshot;
   }

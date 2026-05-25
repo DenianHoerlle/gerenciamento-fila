@@ -45,6 +45,10 @@ export class Queue<T> {
         return this.front?.getValue();
     }
 
+  peekSecond(): T | undefined {
+    return this.front?.getNext()?.getValue();
+  }
+
     getSize(): number {
         return this.size;
     }

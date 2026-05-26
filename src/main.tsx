@@ -2,6 +2,11 @@ import { useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { SimulationController } from "./classes/SimulationController";
 import { HotKonfig } from "./classes/konfigs/HotKonfig";
+import { BoothComponent } from "./components/Booth";
+import { Button } from "./components/Button";
+import { NextTwoComponent } from "./components/NextTwo";
+import { QueueComponent } from "./components/Queue";
+import { StackComponent } from "./components/Stack";
 
 const simulateSystem = () => {
   const SimulationControllerInstance = new SimulationController();
@@ -34,24 +39,38 @@ const MainComponent = () => {
   // LAYOUT
   return (
     <div>
-      <h2>normalQueue: {JSON.stringify(currentSnapshot?.normalQueue)}</h2>
-      <h2>priorityQueue: {JSON.stringify(currentSnapshot?.priorityQueue)}</h2>
-      <h2
-        style={{
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        booths:{" "}
-        {currentSnapshot?.booths.map((booth) => (
-          <span key={Math.random()}>{JSON.stringify(booth)}</span>
-        ))}
+      <QueueComponent
+        queueName="Fila NORMAL"
+        queue={currentSnapshot?.normalQueue}
+      />
+      <QueueComponent
+        queueName="Fila PRIORITÁRIA"
+        queue={currentSnapshot?.priorityQueue}
+      />
+      <BoothComponent
+        booths={[
+          { isOpen: false },
+          { isOpen: true },
+          { currentNumber: 10, isOpen: true },
+        ]}
+      />
+      <StackComponent
+        stack={currentSnapshot?.stack}
+        stackName="Pilha ATENDIDOS"
+      />
+      <NextTwoComponent nextTwo={currentSnapshot?.nextTwo} />
+      <h2>
+        Número de abandonos: {JSON.stringify(currentSnapshot?.abandonCounter)}
       </h2>
-      <h2>stack: {JSON.stringify(currentSnapshot?.stack)}</h2>
-      <h2>nextTwo: {JSON.stringify(currentSnapshot?.nextTwo)}</h2>
-      <h2>abandonCounter: {JSON.stringify(currentSnapshot?.abandonCounter)}</h2>
-      <button onClick={handleRegress}>Prev</button>
-      <button onClick={handleAdvance}>Next</button>
+      <Button onClick={handleRegress} isDisabled={!currentSnapshot.iteration}>
+        Voltar
+      </Button>
+      <Button
+        onClick={handleAdvance}
+        isDisabled={currentSnapshot.iteration >= snapshots.length - 1}
+      >
+        Avançar
+      </Button>
     </div>
   );
 };

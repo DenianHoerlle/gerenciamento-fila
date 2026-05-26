@@ -24,6 +24,7 @@ export class SimulationController {
       stack: [],
       nextTwo: [undefined, undefined],
       abandonCounter: 0,
+      iteration: 0,
     };
 
     this.konfig = konfig;
@@ -63,6 +64,7 @@ export class SimulationController {
       stack: [],
       nextTwo: this.queuesController.peekTwo(),
       abandonCounter: this.queuesController.getAbandonCounter(),
+      iteration: this.currentIteration,
     };
 
     this.snapshots.push(newSnapshot);

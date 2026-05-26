@@ -11,6 +11,7 @@ export type SnapshotType = {
   stack: number[];
   nextTwo: (number | undefined)[];
   abandonCounter: number;
+  iteration: number;
 };
 
 export class Snapshot {
@@ -38,6 +39,7 @@ export class Snapshot {
       stack: [],
       nextTwo: [undefined, undefined],
       abandonCounter: 0,
+      iteration: 0,
     };
   }
 }

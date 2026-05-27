@@ -1,3 +1,4 @@
+import { startTransition, useEffect, useState, ViewTransition } from "react";
 import { NumberComponent } from "./Number";
 
 interface QueueComponentProps {
@@ -8,9 +9,15 @@ interface QueueComponentProps {
 const QueueComponent = (props: QueueComponentProps) => {
   const { queue, queueName } = props;
 
-  const renderQueueContent = () => {
-    if (!queue.length) return <span>Fila vazia</span>;
+  const [localQueue, setLocalQueue] = useState<number[]>([]);
 
+  useEffect(() => {
+    startTransition(() => {
+      setLocalQueue(queue);
+    });
+  }, [queue]);
+
+  const renderQueueContent = () => {
     return (
       <div
         style={{
@@ -18,23 +25,28 @@ const QueueComponent = (props: QueueComponentProps) => {
           gap: 8,
           overflow: "auto",
         }}
+        className="hide-scroll"
       >
-        {queue.map((num) => (
-          <NumberComponent num={num} />
-        ))}
+        {!localQueue.length ? (
+          <span>Fila vazia</span>
+        ) : (
+          localQueue.map((num) => <NumberComponent num={num} key={num} />)
+        )}
       </div>
     );
   };
 
   return (
-    <div
-      style={{
-        minHeight: 100,
-      }}
-    >
-      <h2>{queueName}</h2>
-      {renderQueueContent()}
-    </div>
+    <ViewTransition>
+      <div
+        style={{
+          minHeight: 100,
+        }}
+      >
+        <h2>{queueName}</h2>
+        {renderQueueContent()}
+      </div>
+    </ViewTransition>
   );
 };
 

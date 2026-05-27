@@ -38,6 +38,7 @@ const NumberComponent = (props: NumberComponent) => {
         backgroundColor: colorByNumber(num),
         border: "1px solid black",
       }}
+      className="fade-in"
     >
       {num}
     </div>

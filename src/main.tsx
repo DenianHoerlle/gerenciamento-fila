@@ -7,6 +7,7 @@ import { Button } from "./components/Button";
 import { NextTwoComponent } from "./components/NextTwo";
 import { QueueComponent } from "./components/Queue";
 import { StackComponent } from "./components/Stack";
+import "./index.css";
 
 const simulateSystem = () => {
   const SimulationControllerInstance = new SimulationController();

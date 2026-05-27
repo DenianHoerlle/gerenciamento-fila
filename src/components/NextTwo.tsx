@@ -52,9 +52,13 @@ const NextTwoComponent = (props: NextTwoProps) => {
           padding: 8,
         }}
       >
-        {first ? <NumberComponent num={first} /> : <EmptyNumber />}
+        {first ? <NumberComponent num={first} key={first} /> : <EmptyNumber />}
         <span style={style}>/</span>
-        {second ? <NumberComponent num={second} /> : <EmptyNumber />}
+        {second ? (
+          <NumberComponent num={second} key={second} />
+        ) : (
+          <EmptyNumber />
+        )}
       </div>
     </div>
   );

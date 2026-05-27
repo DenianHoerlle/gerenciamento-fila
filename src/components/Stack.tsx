@@ -18,6 +18,7 @@ const StackComponent = (props: StackComponentProps) => {
           gap: 8,
           overflow: "auto",
         }}
+        className="hide-scroll"
       >
         {!stack.length ? (
           <span
@@ -28,7 +29,7 @@ const StackComponent = (props: StackComponentProps) => {
             Pilha vazia
           </span>
         ) : (
-          stack.map((num) => <NumberComponent num={num} />)
+          stack.map((num) => <NumberComponent num={num} key={num} />)
         )}
       </div>
     );

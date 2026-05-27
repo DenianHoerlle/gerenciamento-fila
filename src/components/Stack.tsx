@@ -9,25 +9,43 @@ const StackComponent = (props: StackComponentProps) => {
   const { stack, stackName } = props;
 
   const renderstackContent = () => {
-    if (!stack.length) return <span>Pilha vazia</span>;
-
     return (
       <div
         style={{
           display: "flex",
+          alignItems: "center",
           flexDirection: "column",
+          gap: 8,
+          overflow: "auto",
         }}
       >
-        {stack.map((num) => (
-          <NumberComponent num={num} />
-        ))}
+        {!stack.length ? (
+          <span
+            style={{
+              margin: "0 auto",
+            }}
+          >
+            Pilha vazia
+          </span>
+        ) : (
+          stack.map((num) => <NumberComponent num={num} />)
+        )}
       </div>
     );
   };
 
   return (
-    <div>
-      <h2>{stackName}</h2>
+    <div
+      style={{ display: "flex", flexDirection: "column", height: "stretch" }}
+    >
+      <h2
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        {stackName}
+      </h2>
       {renderstackContent()}
     </div>
   );

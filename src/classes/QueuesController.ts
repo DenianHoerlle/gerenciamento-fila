@@ -55,12 +55,12 @@ export class QueuesController {
       return;
     }
 
+    this.priorityCounter++;
+
     if (generateRandomness(abandonChance)) {
       this.abandonCounter++;
       return this.callNextNumber(abandonChance);
     }
-
-    this.priorityCounter++;
 
     return numberToCall;
   }

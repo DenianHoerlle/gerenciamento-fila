@@ -16,6 +16,7 @@ const QueueComponent = (props: QueueComponentProps) => {
         style={{
           display: "flex",
           gap: 8,
+          overflow: "auto",
         }}
       >
         {queue.map((num) => (

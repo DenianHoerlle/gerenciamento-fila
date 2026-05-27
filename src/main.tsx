@@ -21,6 +21,20 @@ const simulateSystem = () => {
   return snapshots;
 };
 
+const Cell = (props: any): React.ReactNode => {
+  const { customStyle, children } = props;
+
+  const style: React.CSSProperties = {
+    backgroundColor: "lightskyblue",
+    border: "1px solid black",
+    borderRadius: 12,
+    padding: 8,
+    ...customStyle,
+  };
+
+  return <div style={style}>{children}</div>;
+};
+
 const MainComponent = () => {
   const [currentSnapshotIndex, setCurrentSnapshotIndex] = useState(0);
   const snapshots = useMemo(() => simulateSystem(), []);
@@ -36,41 +50,103 @@ const MainComponent = () => {
       setCurrentSnapshotIndex(currentSnapshotIndex + 1);
   };
 
+  const renderContainer = () => {
+    return (
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gridTemplateRows: "repeat(3, 1fr)",
+          gap: 8,
+          padding: 8,
+          height: 500,
+        }}
+      >
+        <Cell
+          customStyle={{
+            gridColumn: "span 2 / span 2",
+            gridColumnStart: 1,
+            gridRowStart: 1,
+          }}
+        >
+          <QueueComponent
+            queueName="Fila NORMAL"
+            queue={currentSnapshot?.normalQueue}
+          />
+        </Cell>
+        <Cell
+          customStyle={{
+            gridColumn: "span 2 / span 2",
+          }}
+        >
+          <QueueComponent
+            queueName="Fila PRIORITÁRIA"
+            queue={currentSnapshot?.priorityQueue}
+          />
+        </Cell>
+        <Cell
+          customStyle={{
+            gridColumn: "span 2 / span 2",
+            gridColumnStart: 1,
+            gridRowStart: 3,
+          }}
+        >
+          <BoothComponent
+            booths={[
+              { isOpen: false },
+              { isOpen: true },
+              { currentNumber: 10, isOpen: true },
+            ]}
+          />
+        </Cell>
+        <Cell
+          customStyle={{
+            gridColumn: "span 3 / span 3",
+            gridColumnStart: 3,
+            gridRowStart: 1,
+            gridRowEnd: 4,
+          }}
+        >
+          <StackComponent
+            stack={currentSnapshot?.normalQueue}
+            // TODO voltar cabines
+            // stack={currentSnapshot?.stack}
+            stackName="Pilha ATENDIDOS"
+          />
+        </Cell>
+      </div>
+    );
+  };
+
   // LAYOUT
   return (
     <div>
-      <QueueComponent
-        queueName="Fila NORMAL"
-        queue={currentSnapshot?.normalQueue}
-      />
-      <QueueComponent
-        queueName="Fila PRIORITÁRIA"
-        queue={currentSnapshot?.priorityQueue}
-      />
-      <BoothComponent
-        booths={[
-          { isOpen: false },
-          { isOpen: true },
-          { currentNumber: 10, isOpen: true },
-        ]}
-      />
-      <StackComponent
-        stack={currentSnapshot?.stack}
-        stackName="Pilha ATENDIDOS"
-      />
+      <h1>Gerenciamento de filas</h1>
       <NextTwoComponent nextTwo={currentSnapshot?.nextTwo} />
+      {renderContainer()}
       <h2>
         Número de abandonos: {JSON.stringify(currentSnapshot?.abandonCounter)}
       </h2>
-      <Button onClick={handleRegress} isDisabled={!currentSnapshot.iteration}>
-        Voltar
-      </Button>
-      <Button
-        onClick={handleAdvance}
-        isDisabled={currentSnapshot.iteration >= snapshots.length - 1}
+      <div
+        style={{
+          width: "100%",
+          position: "absolute",
+          bottom: 0,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
-        Avançar
-      </Button>
+        <Button onClick={handleRegress} isDisabled={!currentSnapshot.iteration}>
+          Voltar
+        </Button>
+        <Button
+          onClick={handleAdvance}
+          isDisabled={currentSnapshot.iteration >= snapshots.length - 1}
+        >
+          Avançar
+        </Button>
+      </div>
     </div>
   );
 };

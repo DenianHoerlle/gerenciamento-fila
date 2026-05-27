@@ -32,9 +32,26 @@ const NextTwoComponent = (props: NextTwoProps) => {
   };
 
   return (
-    <div>
-      <h2>Próximos dois números a serem chamados:</h2> <br />
-      <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+    <div
+      style={{
+        display: "flex",
+        gap: 8,
+        borderBottom: "1px solid black",
+        paddingBottom: 12,
+      }}
+    >
+      <h2>Próximos números a serem chamados:</h2> <br />
+      <div
+        style={{
+          display: "flex",
+          gap: 12,
+          alignItems: "center",
+          borderRadius: 12,
+          backgroundColor: "lightgoldenrodyellow",
+          border: "1px solid black",
+          padding: 8,
+        }}
+      >
         {first ? <NumberComponent num={first} /> : <EmptyNumber />}
         <span style={style}>/</span>
         {second ? <NumberComponent num={second} /> : <EmptyNumber />}

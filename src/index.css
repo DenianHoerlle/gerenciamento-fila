@@ -1,3 +1,71 @@
+body {
+  background: linear-gradient(135deg, #4a90e2 0%, #1e3a5f 100%);
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  padding: 20px 0;
+}
+
+h1 {
+  text-align: center;
+  font-weight: 700;
+  font-size: 2.75rem;
+  color: #1e3a5f;
+  margin-bottom: 24px;
+}
+
+.checkbox-container {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+  align-self: center;
+}
+
+.custom-checkbox {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #999999;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  margin: 0;
+  vertical-align: middle;
+}
+
+.custom-checkbox:checked {
+  background-color: #ff69b4;
+  border-color: #ff69b4;
+}
+
+.custom-checkbox:checked::after {
+  content: 'x';
+  position: absolute;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.container {
+  background-color: aliceblue;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  width: 70vw;
+  min-height: min-content;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .fade-in {
   opacity: 1;
   animation-name: fadeInOpacity;
@@ -19,6 +87,16 @@
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox, Safari 18.2+, Chromium 121+ */
 }
+
 .hide-scroll::-webkit-scrollbar {
   display: none; /* Older Safari and Chromium */
+}
+
+.button-animate {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(50, 96, 145, 0.3);
+}
+
+.button-animate:not(:disabled):active {
+  transform: scale(0.98);
 }

@@ -51,7 +51,8 @@ export class QueuesController {
     let numberToCall: number | undefined;
 
     if (isPriority) {
-      numberToCall = this.priority.dequeue();
+      if(!this.priority.isEmpty)
+        numberToCall = this.priority.dequeue();
     } else {
       numberToCall = this.normal.dequeue();
     }

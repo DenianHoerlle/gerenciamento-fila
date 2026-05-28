@@ -6,6 +6,10 @@ export class ColdKonfig implements Konfig {
   priorityChance: number;
   initialBoothAmount: number;
   conditionToEnd: (currentIteration: number) => boolean; // pensando ainda
+  minDuration: number;
+  maxDuration: number;
+  maxNewNumberPerIteration: number;
+  minNewNumberPerIteration: number;
 
   private constructor(konfig: Konfig) {
     this.newNumberChance = konfig.newNumberChance;
@@ -13,6 +17,10 @@ export class ColdKonfig implements Konfig {
     this.priorityChance = konfig.priorityChance;
     this.initialBoothAmount = konfig.initialBoothAmount;
     this.conditionToEnd = konfig.conditionToEnd;
+    this.minDuration = konfig.minDuration;
+    this.maxDuration = konfig.maxDuration;
+    this.minNewNumberPerIteration = konfig.minNewNumberPerIteration;
+    this.maxNewNumberPerIteration = konfig.maxNewNumberPerIteration;
   }
 
   public static build(): ColdKonfig {
@@ -21,7 +29,11 @@ export class ColdKonfig implements Konfig {
       abandonChance: 15,
       priorityChance: 15,
       initialBoothAmount: Math.floor(Math.random() * (5 - 3 + 1) + 3),
-      conditionToEnd: (currentIteration: number) => currentIteration === 3,
+      conditionToEnd: (currentIteration: number) => currentIteration === 10,
+      minDuration: 1,
+      maxDuration: 3,
+      maxNewNumberPerIteration: 6,
+      minNewNumberPerIteration: 3,
     });
   }
 }

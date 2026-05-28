@@ -1,7 +1,7 @@
 interface ButtonInterface {
   children: React.ReactNode;
   onClick: () => void;
-  isDisabled: boolean;
+  isDisabled?: boolean;
 }
 
 const Button = (props: ButtonInterface) => {
@@ -22,12 +22,12 @@ const Button = (props: ButtonInterface) => {
   };
 
   return (
-    <button 
+    <button
       onClick={onClick}
       style={style}
       className="button-animate"
       disabled={isDisabled}
-      >
+    >
       {children}
     </button>
   );

@@ -40,7 +40,7 @@ const NextTwoComponent = (props: NextTwoProps) => {
         paddingBottom: 12,
       }}
     >
-      <h2>Próximos números a serem chamados:</h2> <br />
+      <h2>Próximos dois números a serem chamados:</h2> <br />
       <div
         style={{
           display: "flex",

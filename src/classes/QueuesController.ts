@@ -44,28 +44,28 @@ export class QueuesController {
   }
 
   public callNextNumber(abandonChance: number): number | undefined {
-    if (!this.canCallNumber()) return undefined;
+  if (!this.canCallNumber()) return undefined;
 
-    const isPriority = this.priorityCounter % 3 === 0;
+  const isPriority = this.priorityCounter % 3 === 0;
+  let numberToCall: number | undefined;
 
-    let numberToCall: number | undefined;
-
-    if (isPriority) {
-      if(!this.priority.isEmpty)
-        numberToCall = this.priority.dequeue();
-    } else {
+  if (isPriority) {
+    if (!this.priority.isEmpty())
+      numberToCall = this.priority.dequeue();
+    else
       numberToCall = this.normal.dequeue();
-    }
-
-    this.priorityCounter++;
-
-    if (generateRandomness(abandonChance)) {
-      this.abandonCounter++;
-      return this.callNextNumber(abandonChance);
-    }
-
-    return numberToCall;
+  } else {
+    numberToCall = this.normal.dequeue();
   }
+
+  this.priorityCounter++;
+  if (numberToCall !== undefined && generateRandomness(abandonChance)) {
+    this.abandonCounter++;
+    return this.callNextNumber(abandonChance);
+  }
+
+  return numberToCall;
+}
 
   public finishAttendance(finished: number) {
     this.attended.push(finished);

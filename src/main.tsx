@@ -28,7 +28,7 @@ const Cell = (props: any): React.ReactNode => {
   const { customStyle, children } = props;
 
   const style: React.CSSProperties = {
-    backgroundColor: "lightskyblue",
+    backgroundColor: "#b3d6ff",
     border: "1px solid black",
     borderRadius: 12,
     padding: 8,
@@ -40,6 +40,8 @@ const Cell = (props: any): React.ReactNode => {
 
 const MainComponent = () => {
   const [currentSnapshotIndex, setCurrentSnapshotIndex] = useState(0);
+  const [highDemand, setHighDemand] = useState(true);
+  const [lowDemand, setLowDemand] = useState(false);
   const snapshots = useMemo(() => simulateSystem(), []);
 
   const currentSnapshot = snapshots[currentSnapshotIndex];
@@ -115,23 +117,54 @@ const MainComponent = () => {
         </Cell>
       </div>
     );
-  };
+  };  
 
   // LAYOUT
   return (
-    <div>
-      <h1>Gerenciamento de filas</h1>
-      <NextTwoComponent nextTwo={currentSnapshot?.nextTwo} />
-      {renderContainer()}
-      <h2>Número de abandonos: {currentSnapshot?.abandonCounter}</h2>
+    <div className="container">
+      <h1>Gerenciamento de Filas</h1>
+      <div className="checkbox-container">
+        <label className="checkbox-label" style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
+          <input
+            type="checkbox"
+            className="custom-checkbox"
+            checked={highDemand}
+            onChange={() => {
+              setHighDemand(true);
+              setLowDemand(false);
+            }}
+          />
+          <span style={{ fontWeight: 500, paddingLeft: "4px" }}>Alta demanda</span>
+        </label>
+        <label className="checkbox-label" style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
+          <input
+            type="checkbox"
+            className="custom-checkbox"
+            checked={lowDemand}
+            onChange={() => {
+              setLowDemand(true);
+              setHighDemand(false);
+            }}          
+          />
+          <span style={{ fontWeight: 500, paddingLeft: "4px" }}>Baixa demanda</span>
+        </label>
+      </div>
+      <div style={{ marginTop: 16, width: "66%", alignSelf: "flex-start" }}>
+        <NextTwoComponent nextTwo={currentSnapshot?.nextTwo} />
+      </div>
+      <div style={{ width: "100%" }}>
+        {renderContainer()}
+      </div>
+      <h2 style={{ textAlign: "center", marginTop: 16 }}>
+        Iteração: {currentSnapshot?.iteration} | Número de abandonos: {currentSnapshot?.abandonCounter}
+      </h2>
       <div
         style={{
           width: "100%",
-          position: "absolute",
-          bottom: 0,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          marginTop: 8
         }}
       >
         <Button onClick={handleRegress} isDisabled={!currentSnapshot.iteration}>

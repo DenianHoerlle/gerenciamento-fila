@@ -27,6 +27,10 @@ export class QueuesController {
     return this.priority;
   }
 
+  public getAttendedStack() {
+    return this.attended;
+  }
+
   public getAbandonCounter() {
     return this.abandonCounter;
   }
@@ -40,6 +44,8 @@ export class QueuesController {
   }
 
   public callNextNumber(abandonChance: number): number | undefined {
+    if (!this.canCallNumber()) return undefined;
+
     const isPriority = this.priorityCounter % 3 === 0;
 
     let numberToCall: number | undefined;
@@ -48,11 +54,6 @@ export class QueuesController {
       numberToCall = this.priority.dequeue();
     } else {
       numberToCall = this.normal.dequeue();
-    }
-
-    if (!numberToCall) {
-      // TODO o que fazer quando a fila está vazia?
-      return;
     }
 
     this.priorityCounter++;
@@ -67,6 +68,10 @@ export class QueuesController {
 
   public finishAttendance(finished: number) {
     this.attended.push(finished);
+  }
+
+  public canCallNumber(): boolean {
+    return !this.normal.isEmpty() || !this.priority.isEmpty();
   }
 
   public peekTwo(): (number | undefined)[] {

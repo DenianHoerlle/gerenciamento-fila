@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { SimulationController } from "./classes/SimulationController";
 import { HotKonfig } from "./classes/konfigs/HotKonfig";
@@ -10,11 +10,13 @@ import { StackComponent } from "./components/Stack";
 import "./index.css";
 
 const simulateSystem = () => {
-  const SimulationControllerInstance = new SimulationController();
+  const SimulationControllerInstance = new SimulationController(
+    HotKonfig.build(),
+  );
 
-  SimulationControllerInstance.start(HotKonfig.build());
+  SimulationControllerInstance.start();
 
-  while (!SimulationControllerInstance.isFinished)
+  while (!SimulationControllerInstance.getIsFinished())
     SimulationControllerInstance.iterate();
 
   const snapshots = SimulationControllerInstance.stop();
@@ -41,6 +43,10 @@ const MainComponent = () => {
   const snapshots = useMemo(() => simulateSystem(), []);
 
   const currentSnapshot = snapshots[currentSnapshotIndex];
+
+  useEffect(() => {
+    if (snapshots.length) console.log(snapshots);
+  }, [snapshots]);
 
   const handleRegress = () => {
     if (currentSnapshotIndex) setCurrentSnapshotIndex(currentSnapshotIndex - 1);
@@ -92,13 +98,7 @@ const MainComponent = () => {
             gridRowStart: 3,
           }}
         >
-          <BoothComponent
-            booths={[
-              { isOpen: false },
-              { isOpen: true },
-              { currentNumber: 10, isOpen: true },
-            ]}
-          />
+          <BoothComponent booths={currentSnapshot.booths} />
         </Cell>
         <Cell
           customStyle={{
@@ -109,9 +109,7 @@ const MainComponent = () => {
           }}
         >
           <StackComponent
-            stack={currentSnapshot?.normalQueue}
-            // TODO voltar cabines
-            // stack={currentSnapshot?.stack}
+            stack={currentSnapshot?.stack}
             stackName="Pilha ATENDIDOS"
           />
         </Cell>
@@ -125,9 +123,7 @@ const MainComponent = () => {
       <h1>Gerenciamento de filas</h1>
       <NextTwoComponent nextTwo={currentSnapshot?.nextTwo} />
       {renderContainer()}
-      <h2>
-        Número de abandonos: {JSON.stringify(currentSnapshot?.abandonCounter)}
-      </h2>
+      <h2>Número de abandonos: {currentSnapshot?.abandonCounter}</h2>
       <div
         style={{
           width: "100%",

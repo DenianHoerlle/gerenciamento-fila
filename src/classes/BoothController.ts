@@ -1,4 +1,4 @@
-import { Booth } from "./Booth";
+import { Booth, type BoothType } from "./Booth";
 import { CircularLinkedList } from "./CircularLinkedList";
 
 export class BoothController<T> {
@@ -28,6 +28,25 @@ export class BoothController<T> {
 
   public getOccupiedAmount(): number {
     return this.occupiedAmount;
+  }
+
+  public getOpenAmount(): number {
+    return this.size - this.occupiedAmount;
+  }
+
+  public getCurrentBoothsState(): BoothType<T>[] {
+    const allBooths = this.booths.toArray();
+
+    let currentState = [];
+
+    for (const booth of allBooths) {
+      currentState.push({
+        currentNumber: booth.getCurrentNumber(),
+        duration: booth.getDuration(),
+      });
+    }
+
+    return currentState;
   }
 
   public openBooth(): void {

@@ -1,17 +1,12 @@
+import type { BoothType } from "../classes/Booth";
 import { NumberComponent } from "./Number";
 
-type Booth = {
-  currentNumber?: number;
-  duration?: number;
-  isOpen: boolean;
-};
-
 interface BoothComponentProps {
-  booths: Booth[];
+  booths: BoothType<number>[];
 }
 
-const BoothComponent = (props: BoothComponentProps) => {
-  const { booths } = props;
+const Booth = (props: { booth: BoothType<number> }) => {
+  const { currentNumber, duration } = props.booth;
 
   const boothBaseStyles = {
     borderRadius: 8,
@@ -24,29 +19,34 @@ const BoothComponent = (props: BoothComponentProps) => {
     fontSize: 30,
   };
 
-  const renderBooth = (booth: Booth) => {
-    const { isOpen, currentNumber } = booth;
-
-    if (!isOpen) {
-      const style = {
-        ...boothBaseStyles,
-        fontSize: 30,
-      };
-
-      return <div style={style}>❌</div>;
-    }
-
-    return (
+  return (
+    <div
+      key={currentNumber}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <div style={boothBaseStyles}>
         {currentNumber && <NumberComponent num={currentNumber} />}
       </div>
-    );
-  };
+      {duration ? <span>{duration}</span> : null}
+    </div>
+  );
+};
+
+const BoothComponent = (props: BoothComponentProps) => {
+  const { booths } = props;
 
   return (
     <div>
       <h2>Cabines</h2>
-      <div style={{ display: "flex", gap: 8 }}>{booths.map(renderBooth)}</div>
+      <div style={{ display: "flex", gap: 8 }}>
+        {booths.map((booth, index) => (
+          <Booth booth={booth} key={index} />
+        ))}
+      </div>
     </div>
   );
 };
